@@ -7,13 +7,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "ESTACIONAMENTO")
-public class Estacionamento implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Estacionamento{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private Integer id;
 
     @Column(nullable = false, unique = true, length = 10)
     private String nrVagaEstacionamento;
@@ -42,15 +40,15 @@ public class Estacionamento implements Serializable {
     @Column(nullable = false, length = 30)
     private String blocoApartamento;
 
-    public UUID getId() {
-        return id;
-    }
+   public Integer getId() {
+		return id;
+	}
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public String getNrVagaEstacionamento() {
+	public String getNrVagaEstacionamento() {
         return nrVagaEstacionamento;
     }
 

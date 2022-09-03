@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -57,7 +56,7 @@ public class EstacionamentoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> consultarPorId(@PathVariable(value = "id") UUID id){
+    public ResponseEntity<Object> consultarPorId(@PathVariable(value = "id") Integer id){
 
         //estudar o que é Optional
         Optional<Estacionamento> estacionamentoOptional = estacionamentoService.findById(id);
@@ -68,4 +67,48 @@ public class EstacionamentoController {
 
         return ResponseEntity.status(HttpStatus.OK).body(estacionamentoOptional.get());
     }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deletarVagaEstacionamento(@PathVariable(value = "id") Integer id){
+    	
+    	 Optional<Estacionamento> estacionamentoOptional = estacionamentoService.findById(id);
+    	 
+    	 if(!estacionamentoOptional.isPresent()){
+             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nr Vaga de Estacionamento não encontrada");
+         }
+    	 
+    	 estacionamentoService.delete(estacionamentoOptional.get());
+    	 
+    	 return ResponseEntity.status(HttpStatus.OK).body("Vaga de Estacionamento deletada com sucesso.");   	 
+    	 
+    }  
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> atualizar(@PathVariable(value = "id") Integer id, 
+    		@RequestBody @Valid EstacionamentoDTO estacionamentoDTO){
+    	
+    	Optional<Estacionamento> estacionamentoOptional = estacionamentoService.findById(id);
+    	
+    	if(!estacionamentoOptional.isPresent()) {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nr Vaga de Estacionamento não Encontrada");    		
+    	}
+    	
+    	var estacionamento = estacionamentoOptional.get();
+    	
+    	estacionamento.setNrVagaEstacionamento(estacionamentoDTO.getNrVagaEstacionamento());
+    	estacionamento.setPlacaCarro(estacionamentoDTO.getPlacaCarro());
+    	estacionamento.setMarcaCarro(estacionamentoDTO.getMarcaCarro());
+    	estacionamento.setModeloCarro(estacionamentoDTO.getModeloCarro());
+    	estacionamento.setCorCarro(estacionamentoDTO.getCorCarro());
+    	estacionamento.setProprietarioCarro(estacionamentoDTO.getProprietarioCarro());
+    	estacionamento.setApartamento(estacionamentoDTO.getApartamento());
+    	estacionamento.setBlocoApartamento(estacionamentoDTO.getBlocoApartamento());    	
+    	
+    	
+    	ResponseEntity.status(HttpStatus.OK).body(estacionamentoService.save(estacionamento));
+    	    	
+    	return ResponseEntity.status(HttpStatus.OK).body("Dados atualizados com Sucesso!");
+    }
+    
+    
 }

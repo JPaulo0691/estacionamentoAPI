@@ -8,7 +8,6 @@ import com.api.controleestacionamento.repositories.EstacionamentoRepository;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class EstacionamentoService{
@@ -43,8 +42,15 @@ public class EstacionamentoService{
         return estacionamentoRepository.findAll();
     }
 
-    public Optional<Estacionamento> findById(UUID id) {
+    public Optional<Estacionamento> findById(Integer id) {
 
         return estacionamentoRepository.findById(id);
     }
+
+    @Transactional	
+	public void delete(Estacionamento estacionamento) {
+		
+		estacionamentoRepository.delete(estacionamento);
+		
+	}
 }
